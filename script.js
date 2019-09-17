@@ -1,7 +1,7 @@
 var todoList = {
   todos: [],
   displayTodos: function() {
-    // if this.todos.length ===0
+    // if this.todos.length === 0
     if(this.todos.length === 0){
       console.log('Your todo list is empty!');
     } else {
@@ -9,10 +9,10 @@ var todoList = {
       for (var i = 0; i < this.todos.length; i++){
         if (this.todos[i].completed === true) {
           // print with(x)
-          console.log('(x)', this.todos[i].todoText);
+          console.log('(X)', this.todos[i].todoText);
         } else {
-          // print with ()
-          console.log('( )',this.todos[i].todoText);
+          // print with ( )
+          console.log('( )', this.todos[i].todoText);
         }
       }
     }
@@ -36,14 +36,28 @@ var todoList = {
     var todo = this.todos[position];
     todo.completed = !todo.completed;
     this.displayTodos();
+  },
+  toggleAll: function(){
+    var totalTodos = this.todos.length;
+    var completedTodos = 0;
+
+    // Get number of completed todos.
+    for (var i = 0; i < totalTodos; i++){
+      if (this.todos[i].completed === true){
+        completedTodos++;
+      }
+    }
+    // case 1 - If everything is true, make everything false
+    if (completedTodos === totalTodos){
+      for (var i = 0; i < totalTodos; i++){
+        this.todos[i].completed = false;
+      }
+    // case 2 - Otherwise, make everything true
+    } else {
+      for (var i = 0; i < totalTodos; i++){
+        this.todos[i].completed = true;
+      }
+    }
+    this.displayTodos();
   }
 };
-
-
-
-
-
-
-
-
-
