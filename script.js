@@ -21,22 +21,21 @@ var todoList = {
     var completedTodos = 0;
 
     // Get number of completed todos.
-    for (var i = 0; i < totalTodos; i++){
-      if (this.todos[i].completed === true){
+    this.todos.forEach(function(todo) {
+      if(todo.completed === true) {
         completedTodos++;
       }
-    }
-    // case 1 - If everything is true, make everything false
-    if (completedTodos === totalTodos){
-      for (var i = 0; i < totalTodos; i++){
-        this.todos[i].completed = false;
+    });
+
+    this.todos.forEach(function(todo) {
+      // Case 1 - If everything's true, make everything false.
+      if(completedTodos === totalTodos) {
+        todo.completed = false;
+      // Case 2 - Otherwise, make everything true.
+      } else {
+        todo.completed = true;
       }
-    // case 2 - Otherwise, make everything true
-    } else {
-      for (var i = 0; i < totalTodos; i++){
-        this.todos[i].completed = true;
-      }
-    }
+    });
   }
 };
 
@@ -75,20 +74,20 @@ var view = {
   displayTodos: function() {
     var todosUl = document.querySelector('ul');
     todosUl.innerHTML = '';
-    for (var i = 0; i < todoList.todos.length; i++){
-    var todoLi = document.createElement('li');
-    var todo = todoList.todos[i];
-    var todoTextWithCompletion = '';
-    if (todo.completed === true) {
+    todoList.todos.forEach(function(todo, position){
+      var todoLi = document.createElement('li');
+      var todoTextWithCompletion = '';
+
+      if (todo.completed === true) {
         todoTextWithCompletion = '(x) ' + todo.todoText;
       } else {
         todoTextWithCompletion = '( ) ' + todo.todoText;
       }
-      todoLi.id = i;
+      todoLi.id = position;
       todoLi.textContent = todoTextWithCompletion;
-      todoLi.append(this.createDeleteButton());
+      todoLi.appendChild(this.createDeleteButton());
       todosUl.appendChild(todoLi);
-    }
+    }, this);
   },
   createDeleteButton: function() {
     var deleteButton = document.createElement('button');
@@ -96,14 +95,14 @@ var view = {
     deleteButton.className = 'deleteButton';
     return deleteButton;
   },
-  setUpEventListeners: function(){
+  setUpEventListeners: function() {
     var todosUl = document.querySelector('ul');
 
     todosUl.addEventListener('click', function(event) {
-    // Get the elemenbt that was clicked on
+    // Get the element that was clicked on.
     var elementClicked = event.target;
 
-    // Check if elementClicked is a delete button,
+    // Check if elementClicked is a delete button.
     if(elementClicked.className === 'deleteButton'){
       handlers.deleteTodo(parseInt(elementClicked.parentNode.id));
       }
